@@ -404,5 +404,10 @@ We have now successfully joined all our data together. Note the two step process
 
 
 
+## 3. Documentation
 
+This script is documentated in the following ways:
+1. Code is commented where neccessary
+2. The code is embedded in a Markdown document
+3. The code is stored on Github
 
