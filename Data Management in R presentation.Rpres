@@ -60,8 +60,19 @@ Before inputting from Excel:
 * Remove in-sheet calculations/plots
 * Ensure one column has a unique identifier for each row of data
 * If data are in multiple sheets, give sheets descriptive names
-Excel
 
+Excel
+========================================================
+My tips for passing Excel sheets to a data analyst:
+* NEVER calculate e.g. means and put them next to/under the raw data
+* NEVER hide columns - you shouldn't be using Excel long enough to bother with this
+* Don't separate sections of data with blank lines - they just have to be removed later
+* Don't bother with doing calculations e.g. logs in Excel, easier to do these in R
+* Don't colour cells in, this just creates confusion for everyone apart from you
+* Try to ensure column and row names are sensible, don't contain weird characters and don't begin with a number (for column names only, numbered rows are fine)
+
+Excel
+========================================================
 Inputting data from Excel
 * Save each sheet as .csv and use read.csv
 * Import directly from Excel with xlsx package
