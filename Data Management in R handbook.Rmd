@@ -5,6 +5,18 @@ date: "23 April 2016"
 output: html_document
 ---
 
+This is the accompanying material for the BES Quantitative Ecology Special Interest Group course on Data Management in R, delivered on 23rd May 2016 at Charles Darwin House, London.
+
+The course is accompanied by a Powerpoint presentation and covers three key areas:
+
+1. Working with data from different sources in R
+
+2. Managing data within R
+
+3. Managing R scripts and datasets
+
+
+
 ##1. Utilising data from different sources in R
 
 ###1.1 Excel
@@ -410,4 +422,18 @@ This script is documentated in the following ways:
 1. Code is commented where neccessary
 2. The code is embedded in a Markdown document
 3. The code is stored on Github
+
+
+Link to Github:
+
+https://github.com/
+
+
+Install links for Git:
+
+Windows: http://git-scm.com/download/win
+OS X: http://git-scm.com/download/mac
+Debian/Ubuntu: sudo apt-get install git-core
+Other linux: http://git-scm.com/download/linux
+
 
