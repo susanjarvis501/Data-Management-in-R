@@ -437,3 +437,23 @@ Debian/Ubuntu: sudo apt-get install git-core
 Other linux: http://git-scm.com/download/linux
 
 
+
+##4. Useful links
+
+[RODBC package](https://cran.r-project.org/web/packages/RODBC/RODBC.pdf)
+
+[Intro to SQL](https://www.khanacademy.org/computing/computer-programming/sql)
+
+[Hadley Wickham's tidy data paper](http://vita.had.co.nz/papers/tidy-data.pdf)
+
+[BES QE SIG Git intro](http://bes-qsig.github.io/fge/docs/git_basics/)
+
+[How to build an R package](http://bes-qsig.github.io/fge/docs/how_to_build_an_r_package/)
+
+[Introduction to Markdown](http://bes-qsig.github.io/fge/docs/introduction_to_markdown/)
+
+[How to use RMarkdown](http://rmarkdown.rstudio.com/)
+
+[How to build an app in R](http://shiny.rstudio.com/)
+
+[Pipelines for data analysis in R](https://www.rstudio.com/resources/webinars/pipelines-for-data-analysis-in-r/)

@@ -70,6 +70,7 @@ My tips for passing Excel sheets to a data analyst:
 * Don't bother with doing calculations e.g. logs in Excel, easier to do these in R
 * Don't colour cells in, this just creates confusion for everyone apart from you
 * Try to ensure column and row names are sensible, don't contain weird characters and don't begin with a number (for column names only, numbered rows are fine)
+* Add information in a separate sheet with metadata
 
 Excel
 ========================================================
