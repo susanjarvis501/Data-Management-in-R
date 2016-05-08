@@ -113,7 +113,9 @@ Choose the database downloaded from GitHub
 Call the new connection "Example"
 
 * Step 5 - use the RODBC package to connect to the database
+
 SAS
+========================================================
 * SAS is preferred by some as it has good data visualisation, scripting and database capabilities
 * R packages 'haven' and 'sas7bdat' can be used to read directly from SAS data files
 * SAS data can be exported as csv - this is my preferred method

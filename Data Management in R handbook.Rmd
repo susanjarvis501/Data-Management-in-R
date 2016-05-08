@@ -7,7 +7,7 @@ output: html_document
 
 This is the accompanying material for the BES Quantitative Ecology Special Interest Group course on Data Management in R, delivered on 23rd May 2016 at Charles Darwin House, London.
 
-The course is accompanied by a Powerpoint presentation and covers three key areas:
+The course is accompanied by a Powerpoint presentation (provided on Github in Rpres format) and covers three key areas:
 
 1. Working with data from different sources in R
 
@@ -15,15 +15,35 @@ The course is accompanied by a Powerpoint presentation and covers three key area
 
 3. Managing R scripts and datasets
 
+The only pre-requisite for this course is that you have some experience with using R and know some basic commands. All of the commands used in this course will be demonstrated in this document so you can copy and paste commands, or write them in.
+
+I recommend the use of RStudio as an interface to R as it provides a simple interface with Git and allows you to edit different types of scripts (R scripts, Markdown documents, Python scrips) in one place. 
+
+You will need to have the following packages installed to run all the examples in this course:
+
+* `sqldf` 
+
+*
+
+This course is written with a Windows environment in mind, if you are working with a Mac or Linux environment some commands, particularly in the first section, may not apply.
 
 
 ##1. Utilising data from different sources in R
 
+For the first few exercises we will be using a made-up dataset which is presented in 3 different formats on Github (csv, Excel and Access). These are the most commonly used formats for holding data. To download each dataset, click on the link to the dataset and then click on 'View Raw' - this should download a copy of the dataset onto your machine. 
+
+If you are not working on Windows, you should be able to follow the .csv example but may not be able to work with the .xlsx and .accdb files.
+
 ###1.1 Excel
+
+Excel is still the most commonly used program for data input and storage. Although Excel is often used for calculations or plotting, it is poorly suited to creating a reproducible analytical workflow and therefore it is recommended that Excel is only used as a means of entering data and storing raw data. 
 
 Two main ways for importing data from Excel:
 
 a) Export to a csv file and then import using read.csv
+
+This is my preferred way of getting data from Excel into R. Comma separated files can be accessed by a wide range of programs and are therefore useful for transferring data between programs. They can also easily be transferred between operating systems (i.e. a csv file is recognised on both Windows and Linux). Tab-delimited files (.txt) can also be used but are less convenient if working between R and Excel as Excel does not immediately open them in spreadsheet form.
+
 
 ```{r}
 ##I always find it helps to set the working directory near the top of your script
@@ -39,6 +59,8 @@ head(datacsv1)
 
 b) Import directly from Excel, one sheet at a time
 
+It is also possible to read in directly from the Excel file. This option is better if you are working with an Excel file that is constantly updated; you do not want to clog up your machine with multiple csv files.
+
 ```{r, message = FALSE}
 #install and import the 'xlsx' package
 require(xlsx)
@@ -48,11 +70,15 @@ dataexcel1 <- read.xlsx("DM_2305_ExcelExample.xlsx", sheetName = "Plot measureme
 head(dataexcel1)
 ```
 
-Note the data imported via .csv only contains the number of decimal points displayed in Excel so importing directly via Excel is more accurate.
+Note the data imported via .csv only contains the number of decimal points displayed in Excel so importing directly via Excel is also more accurate.
 
 
 
 ###1.2 Access and Oracle databases
+
+Access (and other database formats) are often used to store data from larger projects, where multiple people contribute towards the dataset. Unlike Excel, Access allows separate datasets to be linked to each other through joins and is therefore useful when a project collects multiple types of data.
+
+When reading data into R we can interact directly with the database to pull out data without creating any intermediary copies. This is useful when the database is frequently updated, allowing you to access the newest dataset each time you pull the data into R. As databases are often very large, you also rarely want to import the entire database to R.
 
 To interact with databases we need to use the `ROBDC` package.
 
@@ -60,17 +86,35 @@ To interact with databases we need to use the `ROBDC` package.
 library(RODBC)
 ```
 
-Follow the instructions to set up an ODBC connection on your computer. Once this is ready we can access it via the RODBC package.
+Follow the instructions below to set up an ODBC connection on your computer. 
 
-Firstly, we need to set up the ODBC connection.
+1. Find out the R version you are using with sessionInfo()
+
+2. If you are using 64-bit R, switch to 32-bit (RStudio Tools > Global Options > General > R version > Change... and choose a 32-bit version) You will need to restart your R session
+
+3. Search your C drive for 'odbcad32'and open the version stored in the SysWOW64 folder
+
+4. Click Add > Microsoft Access Driver (*.mdb, *.accdb) > Finish 
+
+5. Enter a short name and description and then Select... > Navigate to where you downloaded the example database
+
+6. Close the ODBC connector
+
+
+Now we've set up the connection we can access it in R via the RODBC package.
+
+Firstly, we need to create the connection using `odbcConnect` and the short name you have your database. I called mine Example.
 
 ```{r, message=FALSE}
 con <- odbcConnect("Example")
 ```
 
-We can then read entire tables from the database.
+We can then read tables from the database into R.
 
 ```{r}
+#List the tables in the database
+sqlTables(con)
+#Extract the plot measurement table
 dataodbc1 <- sqlFetch(con, "Plot measurements")
 ```
 
@@ -85,9 +129,13 @@ To select specific records we use the SQL language which is commonly used in dat
 dataodbc1a <- sqlQuery(con, "select * from `Plot measurements` where Site = 1")
 ```
 
+Basic SQL queries have three main components: select tells you which columns to select, in this case `*` means all columns, from states from which table and the where clause gives the condition to use (in this case where the column 'Site' is equal to 1). Note that you are directly querying the database without having to import the entire table into R, this is very helpful when the tables are large.
+
 
 
 ###1.3 SAS
+
+SAS is an alternative program used for databasing and general data analysis tasks which allows either scripting or a graphical interface.
 
 It is possible to directly read SAS database files using either the `haven` or `sas7bdat` package HOWEVER as both methods require export of data as a SAS dataset it is probably just as efficient to export as .csv and import using read.csv.
 
@@ -95,7 +143,9 @@ It is possible to directly read SAS database files using either the `haven` or `
 
 ###1.4 NetCDF
 
-Packages`RNetCDF` and `ncdf4` can read NetCDF files.
+NetCDF is a common data format for gridded time series datasets, such as climate or nitrogen deposition data. 
+
+Packages`RNetCDF` and `ncdf4` can read NetCDF files into R.
 
 Useful guide here: http://disc.sci.gsfc.nasa.gov/recipes/?q=recipes/How-to-Read-Data-in-netCDF-Format-with-R
 
@@ -107,17 +157,22 @@ Lots of R packages available such as `rdgal`, `rgeos` and lots of tutorials avai
 
 https://github.com/Robinlovelace/Creating-maps-in-R
 
+***To be updated with info from the QESIG Spatial Data Course***
+
 
 
 ##2. Manipulating data in R
 
 ###2.1 Single datasets
 
-For all these examples we will use the iris dataset distributed as part of base R, this is a dataset of measurements of flower characteristics for three species of iris.
+For all these examples we will use the iris dataset distributed as part of base R, this is a dataset of measurements of flower characteristics for three species of iris. You could also try the exercises out with the datasets imported in Section 1.
+
+Manipulations of single datasets are generally conducted with the aim of 'tidying up' data for analysis. Hadley Wickham has written a paper on this called 'Tidy Data' linked to the `tidyr` package with some excellent guidelines to point you through this process. There is a link to the paper at the end of this document. We won't use the `tidyr` package much in this course, as most of the functions are wrappers for more basic functions which we will cover.
+However, it might be a useful exercise to try and replicate some of the exercises using the `tidyr` package.
 
 ####2.1.1 Formats
 
-There are lots of situations in R where the format of your data is crucial i.e. some functions will only work with dataframes, some will only work with matrices. The data import methods in part 1 almost always produce a dataframe but it is good practise to check the format after importing any data to make sure. If you are using RStudio you can check the format of any data in the Environment window. You can also check the format using `is.` functions.
+There are lots of situations in R where the format of your data is crucial i.e. some functions will only work with dataframes, some will only work with matrices. The data import methods in part 1 almost always produce a dataframe but it is good practice to check the format after importing any data to make sure. If you are using RStudio you can check the format of any data in the Environment window. You can also check the format using `is.` functions.
 
 Import iris data so it shows up in your environment window if you are using RStudio.
 ```{r}
@@ -177,6 +232,8 @@ iris.list[[1]]
 iris.list[[1]][1]
 ```
 Note that lists often have multiple levels and combinations of square brackets can be used to extract elements from different levels.
+
+Tip: if you are creating a lot of, for example, dataframes as part of your workflow, it can be useful to store these as elements of a list. That way you can reference them as list elements instead of assigning them all unique names.
 
 
 ####2.1.2 Sorting data
