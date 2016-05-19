@@ -23,14 +23,23 @@ You will need to have the following packages installed to run all the examples i
 
 * `sqldf` 
 
-*
+* `xlsx`
+
+* `RODBC`
+
+* `dplyr`
+
+* `reshape2`
 
 This course is written with a Windows environment in mind, if you are working with a Mac or Linux environment some commands, particularly in the first section, may not apply.
 
 
+***IMPORTANT*** - don't copy and paste commands from the handbook directly into your R console. Always create a new R Script and paste/write all commands into this, then save. This means you can come back to your script at a later date and should be able to replicate your analysis exactly.
+
+
 ##1. Utilising data from different sources in R
 
-For the first few exercises we will be using a made-up dataset which is presented in 3 different formats on Github (csv, Excel and Access). These are the most commonly used formats for holding data. To download each dataset, click on the link to the dataset and then click on 'View Raw' - this should download a copy of the dataset onto your machine. 
+For the first few exercises we will be using a made-up dataset which is presented in 3 different formats on [Github](https://github.com/susanjarvis501/Data-Management-in-R) (csv, Excel and Access). These are the most commonly used formats for holding data. To download each dataset, click on the link to the dataset and then click on 'View Raw' - this should download a copy of the dataset onto your machine. Note there are two .csv files to download.
 
 If you are not working on Windows, you should be able to follow the .csv example but may not be able to work with the .xlsx and .accdb files.
 
@@ -44,10 +53,13 @@ a) Export to a csv file and then import using read.csv
 
 This is my preferred way of getting data from Excel into R. Comma separated files can be accessed by a wide range of programs and are therefore useful for transferring data between programs. They can also easily be transferred between operating systems (i.e. a csv file is recognised on both Windows and Linux). Tab-delimited files (.txt) can also be used but are less convenient if working between R and Excel as Excel does not immediately open them in spreadsheet form.
 
+```{r, echo=FALSE}
+setwd("N:/Quant Ecol SIG/")
+```
 
 ```{r}
 ##I always find it helps to set the working directory near the top of your script
-setwd("N:/Quant Ecol SIG/")
+setwd("YOUR WORKING DIR")
 
 
 #read.csv default settings assume your data has headers in the first row
@@ -67,10 +79,16 @@ require(xlsx)
 #read the first sheet with plot measurements
 
 dataexcel1 <- read.xlsx("DM_2305_ExcelExample.xlsx", sheetName = "Plot measurements")
+#look at the top 6 rows of the first sheet
 head(dataexcel1)
 ```
 
-Note the data imported via .csv only contains the number of decimal points displayed in Excel so importing directly via Excel is also more accurate.
+Exercise: 
+1. Read in the second sheet from Excel
+
+2. What is the difference between the output of the two methods?
+
+
 
 
 
@@ -92,18 +110,14 @@ Follow the instructions below to set up an ODBC connection on your computer.
 
 2. If you are using 64-bit R, switch to 32-bit (RStudio Tools > Global Options > General > R version > Change... and choose a 32-bit version) You will need to restart your R session
 
-3. Search your C drive for 'odbcad32'and open the version stored in the SysWOW64 folder
+3. Search your C drive for 'odbcad32'and open the version stored in the SysWOW64 folder: C:\Windows\SysWoW64\odbcad32.exe	
 
-4. Click Add > Microsoft Access Driver (*.mdb, *.accdb) > Finish 
+4. Click Add > Microsoft Access Driver (*.mdb, *.accdb) > Finish. Input "Example" as the short name and description and then Select... > Navigate to where you downloaded the example database. Close the ODBC connector
 
-5. Enter a short name and description and then Select... > Navigate to where you downloaded the example database
-
-6. Close the ODBC connector
+5. Now we've set up the connection we can access it in R via the `RODBC` package.
 
 
-Now we've set up the connection we can access it in R via the RODBC package.
-
-Firstly, we need to create the connection using `odbcConnect` and the short name you have your database. I called mine Example.
+Firstly, we need to create the connection using `odbcConnect` and the name of the database ("Example" in this case).
 
 ```{r, message=FALSE}
 con <- odbcConnect("Example")
@@ -116,6 +130,7 @@ We can then read tables from the database into R.
 sqlTables(con)
 #Extract the plot measurement table
 dataodbc1 <- sqlFetch(con, "Plot measurements")
+head(dataodbc1)
 ```
 
 Note that the Plot measurements table now has an extra column called 'ID' - this is because Access uses it's own unique ID system.
@@ -131,13 +146,21 @@ dataodbc1a <- sqlQuery(con, "select * from `Plot measurements` where Site = 1")
 
 Basic SQL queries have three main components: select tells you which columns to select, in this case `*` means all columns, from states from which table and the where clause gives the condition to use (in this case where the column 'Site' is equal to 1). Note that you are directly querying the database without having to import the entire table into R, this is very helpful when the tables are large.
 
+Exercise:
+
+1. Select all columns from the Site climate table where temperature is higher than 15 degrees
+
+2. Edit the query from exercise 1 to display only Site and Rainfall columns. Hint: the SQL equivalent of Table$Column is Table.Column and you can select multiple columns in a comma separated list e.g. Table.Column1, Table.Column2
+
+3. How could the format of this database be improved?
+
 
 
 ###1.3 SAS
 
 SAS is an alternative program used for databasing and general data analysis tasks which allows either scripting or a graphical interface.
 
-It is possible to directly read SAS database files using either the `haven` or `sas7bdat` package HOWEVER as both methods require export of data as a SAS dataset it is probably just as efficient to export as .csv and import using read.csv.
+It is possible to directly read SAS database files using either the `haven` or `sas7bdat` package HOWEVER as both methods require export of data as a SAS dataset it is probably just as efficient to export as .csv and import using `read.csv`.
 
 
 
@@ -147,7 +170,7 @@ NetCDF is a common data format for gridded time series datasets, such as climate
 
 Packages`RNetCDF` and `ncdf4` can read NetCDF files into R.
 
-Useful guide here: http://disc.sci.gsfc.nasa.gov/recipes/?q=recipes/How-to-Read-Data-in-netCDF-Format-with-R
+[Useful guide to netCDF with R](http://disc.sci.gsfc.nasa.gov/recipes/?q=recipes/How-to-Read-Data-in-netCDF-Format-with-R)
 
 
 
@@ -157,7 +180,7 @@ Lots of R packages available such as `rdgal`, `rgeos` and lots of tutorials avai
 
 https://github.com/Robinlovelace/Creating-maps-in-R
 
-***To be updated with info from the QESIG Spatial Data Course***
+***To be updated with info from the QE SIG Spatial Data Course***
 
 
 
@@ -165,10 +188,10 @@ https://github.com/Robinlovelace/Creating-maps-in-R
 
 ###2.1 Single datasets
 
-For all these examples we will use the iris dataset distributed as part of base R, this is a dataset of measurements of flower characteristics for three species of iris. You could also try the exercises out with the datasets imported in Section 1.
+For all these examples we will use the iris dataset distributed as part of base R, this is a dataset of measurements of flower characteristics for three species of iris. 
 
-Manipulations of single datasets are generally conducted with the aim of 'tidying up' data for analysis. Hadley Wickham has written a paper on this called 'Tidy Data' linked to the `tidyr` package with some excellent guidelines to point you through this process. There is a link to the paper at the end of this document. We won't use the `tidyr` package much in this course, as most of the functions are wrappers for more basic functions which we will cover.
-However, it might be a useful exercise to try and replicate some of the exercises using the `tidyr` package.
+Manipulations of single datasets are generally conducted with the aim of 'tidying up' data for analysis. Hadley Wickham has written a paper on this called [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf) linked to the `tidyr` package with some excellent guidelines to point you through this process. We won't use the `tidyr` or `dplyr` packages much in this course, as most of the functions do the same job as more basic functions which we will cover, but you might want to investigate these as well.
+
 
 ####2.1.1 Formats
 
@@ -283,6 +306,7 @@ The same result can also be achieved using the `distinct` function in package `d
 ```{r, warning = FALSE, message = FALSE}
 require(dplyr)
 iris.unique2 <- distinct(iris, Petal.Length, Petal.Width)
+nrow(iris.unique2)
 ```
 
 
@@ -378,7 +402,7 @@ tapply(iris$Sepal.Length,iris$Species,mean)
 ```
 
 
-###2.1.7 Applying functions to data
+####2.1.7 Applying functions to data
 
 I often hear people tell me that they have Excel spreadsheets set up to automatically run functions to, for example, convert units from lab or field outputs. While automatic calculation is preferable to manual, doing this is still less preferable than a direct import to R where you can do these calculations in an easily reproducible and auditable way.
 
@@ -390,6 +414,14 @@ iris$LogSepLength <- log(iris$Sepal.Length)
 ```
 
 For more complicated functions you might occasionally need to use `apply` functions, `if` statements or loops. There is a lot of information available on these so we won't cover them in detail here.
+
+
+Exercise:
+
+1. So far we have tried these dataset manipulations on an already "perfect" dataset. Try removing any rows with missing data and then formatting using the tidy data guidelines the data imported from the Plot measurements table. What are the issues that arise? Edit your script to solve the problem(s).
+
+2. Install the `tidyr` package and use this with the `dplyr` package using the   [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) to replicate the single dataset manipulations with these packages. 
+
 
 
 ###2.2 Multiple datasets
@@ -416,6 +448,7 @@ iris.extra$LogSepLength <- log(iris.extra$Sepal.Length)
 iris.all <- rbind(iris, iris.extra)
 ```
 We are now able to combine the datasets with `rbind`. Alternative tools are `smartbind` in the `gtools` package or `rbind.fill` from `plyr` which will add `NA` values if columns cannot be matched.
+
 
 
 ####2.2.2 Matching data
@@ -472,18 +505,24 @@ head(irismatchindiv)
 We have now successfully joined all our data together. Note the two step process - this is useful to do to make sure you catch any errors as you go.
 
 
+Exercise:
+
+1. Join the Plot measurements and Site climate tables from Part 1 to select measurements of Vars 1 and 2 which came from high rainfall sites. Hint: visualise the distribution of rainfall data to select your high rainfall sites.
+
+2. Try to combine the two steps in the iris data joining example into one single `sqldf` query.
+
 
 ## 3. Documentation
 
+Script documentation is becoming more and more important to enable analyses to be shared, reproducible and auditable. Journals already ask you to document data and many are also moving to ask you to document scripts so its a good habit to get into.
+
 This script is documentated in the following ways:
-1. Code is commented where neccessary
-2. The code is embedded in a Markdown document
-3. The code is stored on Github
 
+1. Code is commented where neccessary with `#`
 
-Link to Github:
+2. The code is embedded in a [Markdown document](http://rmarkdown.rstudio.com/)
 
-https://github.com/
+3. The code is stored on [Github](https://github.com/)
 
 
 Install links for Git:
@@ -506,8 +545,6 @@ Below are a list of projects and resources you might find useful in the broad ar
 [RODBC package](https://cran.r-project.org/web/packages/RODBC/RODBC.pdf)
 
 [Intro to SQL](https://www.khanacademy.org/computing/computer-programming/sql)
-
-[Hadley Wickham's tidy data paper](http://vita.had.co.nz/papers/tidy-data.pdf)
 
 [BES QE SIG intro to Git](http://bes-qsig.github.io/fge/docs/git_basics/)
 

@@ -78,6 +78,11 @@ Inputting data from Excel
 * Save each sheet as .csv and use read.csv
 * Import directly from Excel with xlsx package
 
+Excel
+========================================================
+Note the data imported via .csv only contains the number of decimal points displayed in Excel.
+
+This could make a big difference to your analysis - be careful!
 
 Access and Oracle
 ========================================================
@@ -98,7 +103,7 @@ Access and Oracle
 sessionInfo()
 
 * Step 2 - change to 32-bit R if necessary
-R studio - Global Options/R version
+R studio - Tools > Global Options > R version
 
 * Step 3 - find your 32-bit ODBC connector
 Type 'ODBC' in Start menu
@@ -109,8 +114,10 @@ Access and Oracle
 ========================================================
 * Step 4 - set up a new ODBC connection
 Use the Access driver allowing .accdb formats
+Click Add > Microsoft Access Driver (*.mdb, *.accdb) > Finish
 Choose the database downloaded from GitHub
 Call the new connection "Example"
+Close the connector
 
 * Step 5 - use the RODBC package to connect to the database
 
