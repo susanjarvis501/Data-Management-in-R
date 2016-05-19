@@ -146,7 +146,7 @@ dataodbc1a <- sqlQuery(con, "select * from `Plot measurements` where Site = 1")
 
 Basic SQL queries have three main components: select tells you which columns to select, in this case `*` means all columns, from states from which table and the where clause gives the condition to use (in this case where the column 'Site' is equal to 1). Note that you are directly querying the database without having to import the entire table into R, this is very helpful when the tables are large.
 
-Exercise:
+*Exercise:*
 
 1. Select all columns from the Site climate table where temperature is higher than 15 degrees
 
@@ -416,7 +416,7 @@ iris$LogSepLength <- log(iris$Sepal.Length)
 For more complicated functions you might occasionally need to use `apply` functions, `if` statements or loops. There is a lot of information available on these so we won't cover them in detail here.
 
 
-Exercise:
+*Exercise:*
 
 1. So far we have tried these dataset manipulations on an already "perfect" dataset. Try removing any rows with missing data and then formatting using the tidy data guidelines the data imported from the Plot measurements table. What are the issues that arise? Edit your script to solve the problem(s).
 
@@ -505,7 +505,7 @@ head(irismatchindiv)
 We have now successfully joined all our data together. Note the two step process - this is useful to do to make sure you catch any errors as you go.
 
 
-Exercise:
+*Exercise:*
 
 1. Join the Plot measurements and Site climate tables from Part 1 to select measurements of Vars 1 and 2 which came from high rainfall sites. Hint: visualise the distribution of rainfall data to select your high rainfall sites.
 
