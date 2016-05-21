@@ -1,13 +1,13 @@
 ---
 title: "Data Management course handbook"
 author: "Susan Jarvis"
-date: "23 April 2016"
+date: "21 May 2016"
 output: html_document
 ---
 
 This is the accompanying material for the BES Quantitative Ecology Special Interest Group course on Data Management in R, delivered on 23rd May 2016 at Charles Darwin House, London.
 
-The course is accompanied by a Powerpoint presentation (provided on Github in Rpres format) and covers three key areas:
+The course is accompanied by a Powerpoint presentation (provided on Github in PDF format) and covers three key areas:
 
 1. Working with data from different sources in R
 
@@ -57,7 +57,7 @@ This is my preferred way of getting data from Excel into R. Comma separated file
 setwd("N:/Quant Ecol SIG/")
 ```
 
-```{r}
+```{r, eval=FALSE}
 ##I always find it helps to set the working directory near the top of your script
 setwd("YOUR WORKING DIR")
 
@@ -83,7 +83,8 @@ dataexcel1 <- read.xlsx("DM_2305_ExcelExample.xlsx", sheetName = "Plot measureme
 head(dataexcel1)
 ```
 
-Exercise: 
+*Exercises:* 
+
 1. Read in the second sheet from Excel
 
 2. What is the difference between the output of the two methods?
@@ -110,9 +111,9 @@ Follow the instructions below to set up an ODBC connection on your computer.
 
 2. If you are using 64-bit R, switch to 32-bit (RStudio Tools > Global Options > General > R version > Change... and choose a 32-bit version) You will need to restart your R session
 
-3. Search your C drive for 'odbcad32'and open the version stored in the SysWOW64 folder: C:\Windows\SysWoW64\odbcad32.exe	
+3. Search your C drive for 'odbcad32'and open the version stored in the SysWOW64 folder: `C:\Windows\SysWoW64\odbcad32.exe`
 
-4. Click Add > Microsoft Access Driver (*.mdb, *.accdb) > Finish. Input "Example" as the short name and description and then Select... > Navigate to where you downloaded the example database. Close the ODBC connector
+4. Click Add > Microsoft Access Driver (\*.mdb, \*.accdb) > Finish. Input "Example" as the short name and description and then Select... > Navigate to where you downloaded the example database. Close the ODBC connector
 
 5. Now we've set up the connection we can access it in R via the `RODBC` package.
 
@@ -536,8 +537,12 @@ Debian/Ubuntu: sudo apt-get install git-core
 [Other linux](http://git-scm.com/download/linux)
 
 
+##4. Feedback!
 
-##4. Useful links
+It would be great if you could fill in our course [feedback form](http://goo.gl/forms/h9DjBui1z17ICFKC3). This is the first time we have run this course so please let us know your thoughts and what we could do better for next time.
+
+
+##5. Useful links
 
 Below are a list of projects and resources you might find useful in the broad area of R and Data Management. Most of these are tools I use in my everyday work as a data analyst/statistician/ecologist (RODBC, SQL, Git, Markdown, Shiny apps) and there's a couple of things like OpenRefine I've not investigated yet but look interesting. There is a whole world of resources out there, don't feel like you need to know everything (I don't!) but use what you need and what you find works for you.
 
