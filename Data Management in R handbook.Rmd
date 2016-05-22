@@ -75,7 +75,7 @@ It is also possible to read in directly from the Excel file. This option is bett
 
 ```{r, message = FALSE}
 #install and import the 'xlsx' package
-require(xlsx)
+library(xlsx)
 #read the first sheet with plot measurements
 
 dataexcel1 <- read.xlsx("DM_2305_ExcelExample.xlsx", sheetName = "Plot measurements")
@@ -305,7 +305,7 @@ nrow(iris.unique) #102 rows remain in this dataset from the 150 original rows
 The same result can also be achieved using the `distinct` function in package `dplyr`:
 
 ```{r, warning = FALSE, message = FALSE}
-require(dplyr)
+library(dplyr)
 iris.unique2 <- distinct(iris, Petal.Length, Petal.Width)
 nrow(iris.unique2)
 ```
@@ -353,7 +353,7 @@ There is a whole R package `tidyr` with a range of functions to help tidy up dat
 However, I prefer to use the older `reshape` and `reshape2` packages which are not as simple but more flexible. Here we will use the newer `reshape2` package.
 
 ```{r, warning=FALSE,message=FALSE}
-require(reshape2)
+library(reshape2)
 ```
 
 There are only two key functions in this package: `melt` and `cast`.
@@ -478,7 +478,7 @@ irisindivdata$germprop <- c(rpois(50, 3), rpois(50,2), rpois(50, 3), rpois(10,3)
 There are many ways to match datasets in R but I find the most flexible is to use the package `sqldf` which allows SQL based queries in R. This is very useful if you want to replicate an SQL query from another program such as SAS in R as the syntax will be the same. 
 
 ```{r, message = FALSE, warning = FALSE}
-require(sqldf)
+library(sqldf)
 ```
 Joining the species data is straightforward BUT `.` means something different in SQL so I first need to rename iris.all as iris_all
 
